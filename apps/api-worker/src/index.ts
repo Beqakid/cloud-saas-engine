@@ -1,11 +1,13 @@
 import type { Env, ImportQueueMessage } from "@cloud-saas-engine/types";
 import { Router, json, handleOptions } from "./router";
 import { healthHandler } from "./routes/health";
+import { uploadHandler } from "./routes/upload";
 
 // --- Build the router ---
 const router = new Router();
 
 router.get("/health", healthHandler);
+router.post("/files/upload", uploadHandler);
 
 // --- Worker entry point ---
 export default {
