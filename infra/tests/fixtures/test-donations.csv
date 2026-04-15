@@ -1,0 +1,6 @@
+donor_name,amount,date,fund,memo
+"Alice Johnson",100.00,2024-01-15,General,"Weekly tithe"
+"Bob Smith",250.50,2024-01-15,Building,"Capital campaign"
+"Carol Davis",50.00,2024-01-22,Missions,"Monthly pledge"
+"David Wilson",175.00,2024-01-22,General,"Sunday offering"
+"Eve Martinez",500.00,2024-01-29,Youth,"Youth retreat sponsorship"
