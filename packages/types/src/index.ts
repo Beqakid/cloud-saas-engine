@@ -21,6 +21,20 @@ export type {
 // Queue / event messages
 export type { ImportQueueMessage } from "./events";
 
+// Church domain
+export type {
+  Donor,
+  CreateDonor,
+  UpdateDonor,
+  Fund,
+  CreateFund,
+  UpdateFund,
+  Donation,
+  CreateDonation,
+  UpdateDonation,
+  DonationMethod,
+} from "./church";
+
 // API response shapes
 export type {
   ApiResponse,
