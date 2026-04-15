@@ -1,0 +1,10 @@
+{
+  "name": "@cloud-saas-engine/core-agents",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "echo 'placeholder'",
+    "typecheck": "echo 'placeholder'"
+  }
+}
