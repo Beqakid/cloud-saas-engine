@@ -1,12 +1,18 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "types": ["@cloudflare/workers-types"]
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["@cloudflare/workers-types"],
+    "paths": {
+      "@cloud-saas-engine/types": ["../../packages/types/src/index.ts"],
+      "@cloud-saas-engine/core-data": ["../../packages/core-data/src/index.ts"],
+      "@cloud-saas-engine/core-events": ["../../packages/core-events/src/index.ts"]
+    }
   },
-  "include": ["src/**/*.ts"],
-  "references": [
-    { "path": "../../packages/types" }
-  ]
+  "include": ["src/**/*.ts"]
 }

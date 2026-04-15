@@ -1,19 +1,16 @@
 {
   "name": "@cloud-saas-engine/api-worker",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "wrangler dev",
-    "build": "tsc",
-    "deploy": "wrangler deploy",
-    "typecheck": "tsc --noEmit"
-  },
+  "type": "module",
+  "main": "src/index.ts",
   "dependencies": {
-    "@cloud-saas-engine/types": "*"
+    "@cloud-saas-engine/types": "workspace:*",
+    "@cloud-saas-engine/core-data": "workspace:*",
+    "@cloud-saas-engine/core-events": "workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241230.0",
-    "wrangler": "^3.99.0",
     "typescript": "^5.7.0"
   }
 }
