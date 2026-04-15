@@ -2,3 +2,32 @@ name = "cloud-saas-engine-api"
 main = "src/index.ts"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+# ── D1 Database ──────────────────────────────────────────────
+[[d1_databases]]
+binding = "DB"
+database_name = "cloud-saas-engine-db"
+database_id = "df9eafdd-8340-42e8-aa71-e70c6029013c"
+
+# ── R2 Bucket ────────────────────────────────────────────────
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "cloud-saas-engine-files"
+
+# ── KV Namespace ─────────────────────────────────────────────
+[[kv_namespaces]]
+binding = "KV"
+id = "06e04ee99d924160bfb2c88256303c7e"
+
+# ── Queue Producer ───────────────────────────────────────────
+[[queues.producers]]
+binding = "IMPORT_QUEUE"
+queue = "cloud-saas-engine-import-queue"
+
+# ── Queue Consumer ───────────────────────────────────────────
+[[queues.consumers]]
+queue = "cloud-saas-engine-import-queue"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+dead_letter_queue = ""
