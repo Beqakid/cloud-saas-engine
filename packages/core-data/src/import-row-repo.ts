@@ -59,6 +59,17 @@ export class ImportRowRepo {
   }
 
   /**
+   * Get ALL rows for a job (no pagination). Used by mappers that need the full set.
+   */
+  async listByJob(db: D1Database, jobId: string): Promise<ImportRow[]> {
+    const { results } = await db
+      .prepare(`SELECT * FROM import_rows WHERE job_id = ? ORDER BY row_number ASC`)
+      .bind(jobId)
+      .all<ImportRow>();
+    return results;
+  }
+
+  /**
    * Count rows by status for a given job.
    */
   async countByJobId(db: D1Database, jobId: string): Promise<ImportRowCounts> {

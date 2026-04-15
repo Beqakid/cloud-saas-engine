@@ -1,6 +1,7 @@
 import type { Env, ImportQueueMessage, CreateImportRow } from "@cloud-saas-engine/types";
 import { ImportJobRepo, ImportRowRepo } from "@cloud-saas-engine/core-data";
 import { parseImportMessage } from "@cloud-saas-engine/core-events";
+import { mapImportToChurch } from "@cloud-saas-engine/church-plugin";
 
 const jobRepo = new ImportJobRepo();
 const rowRepo = new ImportRowRepo();
@@ -96,15 +97,22 @@ async function processImportJob(
       });
     }
 
-    // 5. Final status
+    // 5. Run church mapper to create donors + donations
+    const mapResult = await mapImportToChurch(env, job_id, message.tenant_id);
+
+    // 6. Final status
     const processedRows = rows.length - errorCount;
+    const mapSummary = `Donors: ${mapResult.donorsCreated} new, ${mapResult.donorsMatched} matched. Donations: ${mapResult.donationsCreated}. Funds: ${mapResult.fundsCreated}.`;
     await jobRepo.updateStatus(env.DB, job_id, "completed", {
       totalRows: rows.length,
       processedRows,
-      errorCount,
+      errorCount: errorCount + mapResult.errors.length,
+      errorLog: mapResult.errors.length > 0
+        ? mapResult.errors.join("; ")
+        : null,
     });
 
-    // 6. Write terminal status to KV cache
+    // 7. Write terminal status to KV cache
     await env.CACHE.put(
       `job:${job_id}`,
       JSON.stringify({
@@ -112,7 +120,8 @@ async function processImportJob(
         status: "completed",
         total_rows: rows.length,
         processed_rows: processedRows,
-        error_count: errorCount,
+        error_count: errorCount + mapResult.errors.length,
+        map_summary: mapSummary,
         updated_at: new Date().toISOString(),
       }),
       { expirationTtl: 3600 }
