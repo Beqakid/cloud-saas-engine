@@ -1,5 +1,6 @@
 -- Migration: 0001_create_import_tables
 -- Description: Create import_jobs and import_rows tables for CSV import pipeline
+-- Applied: Phase 0 (manual), tracked from Phase 1
 
 CREATE TABLE IF NOT EXISTS import_jobs (
   id TEXT PRIMARY KEY,
@@ -15,8 +16,8 @@ CREATE TABLE IF NOT EXISTS import_jobs (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-CREATE INDEX idx_import_jobs_tenant ON import_jobs(tenant_id);
-CREATE INDEX idx_import_jobs_status ON import_jobs(status);
+CREATE INDEX IF NOT EXISTS idx_import_jobs_tenant ON import_jobs(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_import_jobs_status ON import_jobs(status);
 
 CREATE TABLE IF NOT EXISTS import_rows (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,5 +31,5 @@ CREATE TABLE IF NOT EXISTS import_rows (
   UNIQUE(job_id, row_number)
 );
 
-CREATE INDEX idx_import_rows_job ON import_rows(job_id);
-CREATE INDEX idx_import_rows_status ON import_rows(job_id, status);
+CREATE INDEX IF NOT EXISTS idx_import_rows_job ON import_rows(job_id);
+CREATE INDEX IF NOT EXISTS idx_import_rows_status ON import_rows(job_id, status);
