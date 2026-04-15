@@ -4,6 +4,9 @@ import { healthHandler } from "./routes/health";
 import { uploadHandler } from "./routes/upload";
 import { listJobsHandler, jobStatusHandler, jobRowsHandler } from "./routes/jobs";
 import { adminHandler } from "./routes/admin";
+import { listFundsHandler, createFundHandler, updateFundHandler, deleteFundHandler } from "./routes/funds";
+import { listDonorsHandler, getDonorHandler, createDonorHandler, updateDonorHandler, deleteDonorHandler } from "./routes/donors";
+import { listDonationsHandler, getDonationHandler, createDonationHandler, updateDonationHandler, deleteDonationHandler } from "./routes/donations";
 import { handleQueueBatch } from "./queue-handler";
 
 // --- Build the router ---
@@ -16,6 +19,24 @@ router.post("/files/upload", uploadHandler);
 router.get("/jobs", listJobsHandler);
 router.get("/jobs/:id/status", jobStatusHandler);
 router.get("/jobs/:id/rows", jobRowsHandler);
+
+// Church domain CRUD
+router.get("/funds", listFundsHandler);
+router.post("/funds", createFundHandler);
+router.put("/funds/:id", updateFundHandler);
+router.delete("/funds/:id", deleteFundHandler);
+
+router.get("/donors", listDonorsHandler);
+router.post("/donors", createDonorHandler);
+router.get("/donors/:id", getDonorHandler);
+router.put("/donors/:id", updateDonorHandler);
+router.delete("/donors/:id", deleteDonorHandler);
+
+router.get("/donations", listDonationsHandler);
+router.post("/donations", createDonationHandler);
+router.get("/donations/:id", getDonationHandler);
+router.put("/donations/:id", updateDonationHandler);
+router.delete("/donations/:id", deleteDonationHandler);
 
 // --- Worker entry point ---
 export default {

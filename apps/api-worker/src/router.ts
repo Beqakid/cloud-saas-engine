@@ -37,6 +37,14 @@ export class Router {
     this.add("POST", pathname, handler);
   }
 
+  put(pathname: string, handler: RouteHandler): void {
+    this.add("PUT", pathname, handler);
+  }
+
+  delete(pathname: string, handler: RouteHandler): void {
+    this.add("DELETE", pathname, handler);
+  }
+
   match(method: string, url: URL): { handler: RouteHandler; params: Record<string, string> } | null {
     for (const route of this.routes) {
       if (route.method !== method.toUpperCase()) continue;
