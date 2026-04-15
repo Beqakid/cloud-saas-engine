@@ -79,10 +79,24 @@ async function processImportJob(
       }
     }
 
-    // 4. Batch insert rows
-    await rowRepo.batchInsert(env.DB, rows);
+    // 4. Batch insert rows in chunks of 50 with progress updates
+    const BATCH_SIZE = 50;
+    let insertedSoFar = 0;
 
-    // 5. Update progress in D1 after each batch is done
+    for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+      const chunk = rows.slice(i, i + BATCH_SIZE);
+      await rowRepo.batchInsert(env.DB, chunk);
+      insertedSoFar += chunk.length;
+
+      // Update progress in D1 so admin UI progress bar animates
+      await jobRepo.updateStatus(env.DB, job_id, "processing", {
+        totalRows: rows.length,
+        processedRows: insertedSoFar - errorCount,
+        errorCount,
+      });
+    }
+
+    // 5. Final status
     const processedRows = rows.length - errorCount;
     await jobRepo.updateStatus(env.DB, job_id, "completed", {
       totalRows: rows.length,

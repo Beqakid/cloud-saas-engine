@@ -74,7 +74,20 @@ export async function uploadHandler(ctx: RouteContext): Promise<Response> {
     r2_key: r2Key,
   });
 
-  // 3. Enqueue for async processing
+  // 3. Seed KV cache so status polling works immediately
+  await env.CACHE.put(
+    `job:${jobId}`,
+    JSON.stringify({
+      id: jobId,
+      status: "pending",
+      filename,
+      tenant_id: tenantId,
+      updated_at: new Date().toISOString(),
+    }),
+    { expirationTtl: 3600 }
+  );
+
+  // 4. Enqueue for async processing
   await enqueueImportJob(env.IMPORT_QUEUE, {
     job_id: jobId,
     tenant_id: tenantId,
