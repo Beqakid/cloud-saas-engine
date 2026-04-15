@@ -2,6 +2,7 @@ import type { Env } from "@cloud-saas-engine/types";
 import { Router, json, handleOptions } from "./router";
 import { healthHandler } from "./routes/health";
 import { uploadHandler } from "./routes/upload";
+import { listJobsHandler, jobStatusHandler, jobRowsHandler } from "./routes/jobs";
 import { handleQueueBatch } from "./queue-handler";
 
 // --- Build the router ---
@@ -9,6 +10,9 @@ const router = new Router();
 
 router.get("/health", healthHandler);
 router.post("/files/upload", uploadHandler);
+router.get("/jobs", listJobsHandler);
+router.get("/jobs/:id/status", jobStatusHandler);
+router.get("/jobs/:id/rows", jobRowsHandler);
 
 // --- Worker entry point ---
 export default {
