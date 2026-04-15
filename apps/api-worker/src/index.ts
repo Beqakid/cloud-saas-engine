@@ -3,11 +3,14 @@ import { Router, json, handleOptions } from "./router";
 import { healthHandler } from "./routes/health";
 import { uploadHandler } from "./routes/upload";
 import { listJobsHandler, jobStatusHandler, jobRowsHandler } from "./routes/jobs";
+import { adminHandler } from "./routes/admin";
 import { handleQueueBatch } from "./queue-handler";
 
 // --- Build the router ---
 const router = new Router();
 
+router.get("/", adminHandler);
+router.get("/admin", adminHandler);
 router.get("/health", healthHandler);
 router.post("/files/upload", uploadHandler);
 router.get("/jobs", listJobsHandler);
