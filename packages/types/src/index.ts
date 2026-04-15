@@ -1,22 +1,18 @@
-/** Standard health check response */
 export interface HealthResponse {
   ok: boolean;
   service: string;
   timestamp: string;
+  bindings?: {
+    d1: boolean;
+    r2: boolean;
+    kv: boolean;
+    queue: boolean;
+  };
 }
 
-/** Import job status */
-export type JobStatus = 'pending' | 'queued' | 'processing' | 'completed' | 'failed';
-
-/** Import job record */
-export interface ImportJob {
-  id: string;
-  fileId: string;
-  fileName: string;
-  status: JobStatus;
-  totalRows?: number;
-  processedRows?: number;
-  errorMessage?: string;
-  createdAt: string;
-  updatedAt: string;
+export interface Env {
+  DB: D1Database;
+  FILES: R2Bucket;
+  KV: KVNamespace;
+  IMPORT_QUEUE: Queue;
 }
