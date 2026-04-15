@@ -1,7 +1,8 @@
-import type { Env, ImportQueueMessage } from "@cloud-saas-engine/types";
+import type { Env } from "@cloud-saas-engine/types";
 import { Router, json, handleOptions } from "./router";
 import { healthHandler } from "./routes/health";
 import { uploadHandler } from "./routes/upload";
+import { handleQueueBatch } from "./queue-handler";
 
 // --- Build the router ---
 const router = new Router();
@@ -33,10 +34,6 @@ export default {
   },
 
   async queue(batch: MessageBatch, env: Env): Promise<void> {
-    // Queue consumer — wired in Task 6
-    console.log(`Queue batch received: ${batch.messages.length} messages`);
-    for (const msg of batch.messages) {
-      msg.ack();
-    }
+    await handleQueueBatch(batch, env);
   },
 } satisfies ExportedHandler<Env>;
